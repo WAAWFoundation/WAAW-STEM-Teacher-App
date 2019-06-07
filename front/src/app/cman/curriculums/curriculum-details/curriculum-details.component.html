@@ -1,0 +1,264 @@
+<!-- View the text editor -->
+<!-- <div class="row">
+  <div class="col-12 mb-3">
+    <p>Test to view text editor</p>
+    <ngx-wig [content]="text1"></ngx-wig>
+  </div>
+</div> -->
+
+<div class="app-title">
+  <h1 class="mb-1">{{ curriculum?.subject.name }}</h1>
+  <p>
+    <strong>Type:</strong> {{ curriculum?.type.name }} |
+    <strong>Level:</strong> {{ curriculum?.level.name.toUpperCase() }}
+  
+  <button class="btn btn-outline-danger btn-sm ml-auto mr-auto" (click)="delete(curriculum?.id)">
+    <i class="mdi mdi-delete pr-1 "></i>Delete Curriculum
+  </button>
+</p>
+
+
+   
+</div>
+
+<div class="row" *ngIf="curriculumTopics.length > 0">
+  <div class="col-12 mb-3">
+    <button class="btn btn-primary btn-sm" (click)="open(content)">
+      <i class="mdi mdi-plus-box pr-1"></i>Add A New Topic
+    </button>
+
+  </div>
+</div>
+
+<!-- Show if there are no topics associated to the curriculum -->
+<div class="row" *ngIf="curriculumTopics.length  < 1">
+  <div class="col-12 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-center">
+          <div class="align-self-center text-center">
+            <p class="text-muted">No available content for this curriculum</p>
+            <button class="btn btn-primary btn-sm" (click)="open(content)">
+              <i class="mdi mdi-plus-box pr-1"></i>Begin By Adding A Topic
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row">
+  <!-- Display list of topics in vertical list group -->
+  <div class="col-12 col-md-4 mb-4">
+    <div *ngIf="curriculumTopics.length > 0" class="list-group" id="list-tab" role="tablist">
+      <a href="#" *ngFor="let topic of curriculumTopics; let i = index;" [attr.id]="'topic_item_' + topic.id" [attr.class]="'list-group-item list-group-item-action'"
+        (click)="viewTopic(topic.id, $event)">
+        {{ i + 1 }}. {{ topic.title }}
+      </a>
+    </div>
+  </div>
+
+  <div *ngIf="topic" class="col-12 col-md-8">
+    <!-- Display topic details and section contents -->
+    <div id="accordion">
+      <div class="card mb-3">
+        <div class="card-header collapsible" id="topic_intro" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+          aria-controls="topic-details">
+          <h5 class="mb-0 card-title">{{ topic.title }}</h5>
+          <button class="btn btn-primary btn-sm ml-5" (click)="openEdit(content, topic)">
+            Edit Topic
+          </button>
+        </div>
+        <div id="collapseOne" class="collapse show" aria-labelledby="topic_intro" data-parent="#accordion">
+          <div class="card-body topic-details">
+            <p>
+              <label>Duration:</label>
+              <span>{{ topic.durration }} minutes</span>
+            </p>
+            <p>
+              <label>Description:</label>
+              <span>{{ topic.description }}</span>
+            </p>
+            <p>
+              <label>Outcome:</label>
+              <span [innerHTML]="topic.outcome"></span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Display topic content sections -->
+      <div *ngIf="topicContents.length > 0" class="accordion" id="contentsAccordion">
+        <div class="card contents mb-3" *ngFor="let content of topicContents; let i = index;" [attr.id]="'content_' + content.id">
+          <div class="card-header collapsible collapsed" style="padding: 15px;" [attr.id]="'contentHeading_' + i" data-toggle="collapse"
+            [attr.data-target]="'#contentCollapse_' + i" aria-expanded="false" [attr.aria-controls]="'contentCollapse_' + i">
+            <h6 class="mb-0 card-title">{{ titleCase(content.title.toString()) }}</h6>
+          </div>
+          <div [attr.id]="'contentCollapse_' + i" class="collapse" [attr.aria-labelledby]="'contentHeading_' + i" data-parent="#contentsAccordion">
+            <div class="card-body">
+              <div *ngFor="let section of content.body; let i = index;" [contextMenu]="sectionActionMenu" [contextMenuSubject]="section">
+                <!-- Text block and actions -->
+                <div [attr.class]="'mb-3 content_' + content.id" *ngIf="section.type == 'text'" [attr.id]="'text_' + section.id" [innerHTML]="section.value"></div>
+
+                <!-- Image block and actions -->
+                <img *ngIf="section.type == 'image'" [attr.id]="'image_' + section.id" [attr.class]="'mb-3 section-image img-fluid content_' + content.id"
+                  data-type="image" [attr.src]="assetURL + '/' + section.value" />
+              </div>
+
+              <!-- Context Menu -->
+              <context-menu #sectionActionMenu>
+                <ng-template contextMenuItem (execute)="editSection($event.item, content)">
+                  <span>Edit</span>
+                </ng-template>
+                <ng-template contextMenuItem divider="true"></ng-template>
+                <ng-template contextMenuItem let-item (execute)="deleteSection($event.item, content)">
+                  <span class="text-danger">Delete</span>
+                </ng-template>
+              </context-menu>
+
+              <hr>
+              <!-- Add Paragraph TextInput -->
+              <form [attr.id]="'textBlock_' + i" style="display: none;" class="addParagraph">
+                <div class="form-group">
+                  <ngx-wig [content]="textInitialInput" [placeholder]="'Enter text content here'"  (contentChange)="getTextInput($event)"></ngx-wig>
+                </div>
+
+                <button class="btn btn-success btn-sm btn-block" (click)="addParagraph(content, i, $event)">Add Text Block</button>
+              </form>
+
+              <!-- Add Image Input -->
+              <!-- <form [attr.id]="'imageBlock_' + i" style="display: none;">
+                <div class="form-group">
+                  <input [attr.id]="'imageBlock_' + i + '_Content'" (change)="addImage(content, i, $event)" [attr.name]="'section_text_' + i"
+                    type="file" class="form-control">
+                </div>
+              </form> -->
+
+
+
+              <!-- Edit Paragraph Text Input -->
+              <form [attr.id]="'textEditBlock_' + content.id" style="display: none;" class="editParagraph">
+                <div class="form-group">
+                  <ngx-wig [content]="textInitialInput" (contentChange)="getTextInput($event)"></ngx-wig>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <button class="btn btn-success btn-sm btn-block" (click)="editParagraph(content, content.id, $event)">Save</button>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <button class="btn btn-info btn-sm btn-block" (click)="cancelEditParagraph(content.id, $event)">Cancel</button>
+                  </div>
+                </div>
+              </form>
+
+              <!-- Edit Image Input -->
+              <form [attr.id]="'imageBlock_' + i" style="display: none;">
+                <div class="form-group">
+                  <input [attr.id]="'imageBlock_' + i + '_Content'" (change)="addImage(content, i, $event)" [attr.name]="'section_text_' + i"
+                    type="file" class="form-control">
+                </div>
+              </form>
+
+              <button class="btn btn-outline-info btn-sm mt-3" (click)="addSection(content, i, 'text', $event)" data-toggle="tooltip" data-placement="top"
+                title="Add a text section">
+                <i class="mdi mdi-textbox"></i>
+              </button>
+
+              <button class="btn btn-outline-info btn-sm mt-3 ml-2" (click)="addSection(content, i, 'image', $event)" data-toggle="tooltip"
+                data-placement="top" title="Add an image section">
+                <i class="mdi mdi-image"></i>
+              </button>
+
+              <button class="btn  btn-outline-danger btn-sm mt-3 ml-2" (click)="deleteContent(content, i, $event)" data-toggle="tooltip"
+                data-placement="top" title="Delete this content block">
+                <i class="mdi mdi-delete"></i>
+              </button>
+
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Section Forms... for title, text blocks, and images -->
+    <div class="card my-3" *ngIf="topic && showSectionTitleForm">
+      <div class="card-header">
+        <h5 class="mb-0">New Section</h5>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="SectionForm" (ngSubmit)="addContentTitle(SectionForm.value, topic.id)">
+          <div class="form-group">
+            <label for="txtContentTitle" class="control-label">Title:</label>
+
+            <input #contentTitle type="text" id="txtContentTitle" formControlName="title" class="form-control" required>
+          </div>
+          <button class="btn btn-primary btn-sm" type="submit" *ngIf="contentTitle.value.length >= 5">Add Section Title</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Add new section actions -->
+    <div class="card" style="background-color: #edeff1">
+      <div class="card-body text-center">
+        <div *ngIf="!topic?.contents" class="mb-3">
+          There are no content sections for this topic
+        </div>
+        <button class="btn btn-primary btn-sm" (click)="toggleShowSectionTitleForm()">Add New Section</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add New Topic Modal -->
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="createTopicTitle" *ngIf="!editTopic">Add A Topic</h4>
+    <h4 class="modal-title" id="createTopicTitle" *ngIf="editTopic">Edit Topic</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form [formGroup]="TopicForm" (ngSubmit)="addNewTopic(TopicForm.value)">
+    <div class="modal-body">
+      <div *ngIf="formErrors" class="alert alert-danger alert-dismissible fade show mb-3 mt-30" role="alert">
+        <strong>Errors!</strong> Please ensure to fill all form fields.
+        <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+        <!--<span aria-hidden="true">&times;</span>-->
+        <!--</button>-->
+      </div>
+      <div class="form-group">
+        <label for="txtTopicTitle" class="control-label">Topic:</label>
+        <input type="text" id="txtTopicTitle" class="form-control" formControlName="title">
+      </div>
+
+      <div class="form-group">
+        <label for="txtTopicDescription" class="control-label">Description:</label>
+        <textarea id="txtTopicDescription" class="form-control" formControlName="description"></textarea>
+      </div>
+
+      <div class="form-group mb-0">
+        <label for="txtTopicDuration" class="control-label">Duration:</label>
+      </div>
+      <div class="input-group mb-3">
+        <input type="number" id="txtTopicDuration" class="form-control" formControlName="durration" step="1">
+        <div class="input-group-append">
+          <span class="input-group-text">minutes</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="txtTopicOutcome" class="control-label">Learning Outcomes:</label>
+        <textarea formControlName="outcome" id="txtTopicOutcome" class="form-control" cols="30" rows="10"></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-primary btn-block" type="submit">Add Topic</button>
+    </div>
+  </form>
+</ng-template>

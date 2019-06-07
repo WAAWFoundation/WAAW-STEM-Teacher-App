@@ -1,0 +1,144 @@
+<div class="container-scroller">
+  <div class="container-fluid page-body-wrapper">
+    <div class="row">
+      <div class="content-wrapper full-page-wrapper d-flex align-items-center auth register-full-bg0">
+        <div class="row w-100">
+          <div class="col-lg-5 mx-auto">
+            <div class="auth-form-light text-left p-5">
+              <h2>
+                <i class="fa fa-lg fa-fw fa-user"></i>SIGNUP
+              </h2>
+
+
+              <h4 class="font-weight-light">Hello! let's get started</h4>
+              <form class="signup-form" [formGroup]="newForm" (ngSubmit)="addNew(newForm.value)" *ngIf="!responseConfirm">
+               
+                 
+                <div class="row">
+                  <div class="col-lg-12">
+
+                    <div class="form-group">
+                      <label class="control-label">First Name *</label>
+                      <input class="form-control" formControlName="first_name" type="text" placeholder="First Name" autofocus>
+                      <small *ngIf="!newForm.controls.first_name.valid && (newForm.controls['first_name'].touched)" class="text-danger">
+                        <div [hidden]="!newForm.controls.first_name.errors.required">
+                          Please enter your first Name!
+                        </div>
+                      </small>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="control-label">Last Name *</label>
+                      <input class="form-control" formControlName="last_name" type="text" placeholder="Last Name" autofocus>
+                      <small *ngIf="!newForm.controls.last_name.valid && (newForm.controls['last_name'].touched)" class="text-danger">
+                        <div [hidden]="!newForm.controls.last_name.errors.required">
+                          Please enter your first Name!
+                        </div>
+                      </small>
+                    </div>
+              
+              
+                    <div class="form-group">
+                      <label class="control-label">Email *</label>
+                      <input class="form-control" formControlName="email" type="text" placeholder="Email" autofocus>
+                      <small *ngIf="!newForm.controls.email.valid && (newForm.controls['email'].touched)" class="text-danger">
+                        <div [hidden]="!newForm.controls.email.errors.required">
+                          Please enter your email!
+                        </div>
+                      </small>
+                      <i class="mdi mdi-eye"></i>
+              
+                    </div>
+              
+              
+                    <div class="form-group">
+                      <label class="control-label">Phone *</label>
+                      <input class="form-control" formControlName="phone" type="text" placeholder="Phone" autofocus>
+                      <small *ngIf="!newForm.controls.phone.valid && (newForm.controls['phone'].touched)" class="text-danger">
+                        <div [hidden]="!newForm.controls.phone.errors.required">
+                          Please enter your Phone!
+                        </div>
+                      </small>
+                      <i class="mdi mdi-eye"></i>
+                    </div>
+              
+                    <div class="form-group">
+                      <label class="control-label">Password *</label>
+                      <input class="form-control" formControlName="password" type="password" placeholder="Password">
+                      <i class="mdi mdi-eye"></i>
+                      <small *ngIf="!newForm.controls.password.valid && (newForm.controls['password'].touched)" class="text-danger">
+                        <div [hidden]="!newForm.controls.password.errors.required">
+                          Please enter your password
+                        </div>
+                        <div [hidden]="!newForm.controls.password.errors.minlength">
+                          Password should be greater than 6!
+                        </div>
+                      </small>
+                    </div>
+                 
+                    <div class="form-group">
+                      <label class="control-label">Company Name *</label>
+                      <input class="form-control" type="text" formControlName="company_name" placeholder="Company Name" autofocus>
+              
+                      <small *ngIf="!newForm.controls.company_name.valid && (newForm.controls['company_name'].touched)" class="text-danger">
+                        <div [hidden]="!newForm.controls.company_name.errors.required">
+                          Company Name Required!
+                        </div>
+                      </small>
+                    </div>
+              
+              
+              
+                   
+                  </div>
+                </div>
+                
+              
+                <div class="form-group">
+                  <div class="utility">
+                    <div class="animated-checkbox">
+                      <label>
+                        <input type="checkbox" formControlName="terms">
+                        <span class="label-text">Accept our terms
+                          <a href="forkeep.reimnet.com">Terms and use of service!</a>
+                        </span>
+                        <!-- <small *ngIf="!newForm.controls.terms.valid || newForm.controls.terms.touched" class="text-danger">
+                                      Please Accept Partnership terms
+                                    </small> -->
+                        <br />
+                        <small *ngIf="!newForm.controls.terms.valid && (newForm.controls['terms'].touched)" class="text-danger">
+                          Please enter your password
+                        </small>
+                      </label>
+                    </div>
+              
+                  </div>
+                </div>
+              
+                <div class="form-group btn-container">
+                  <button class="btn btn-primary btn-block" [disabled]="!newForm.valid">
+                    <span *ngIf="!submitPending">
+                      <i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN UP</span>
+                    <span *ngIf="submitPending && newForm.valid">Please Wait...</span>
+                    <span *ngIf="submitPending && newForm.valid" class="fa fa-spinner" aria-hidden="true"></span>
+                  </button>
+                </div>
+
+                <div class="mt-2 text-center">
+                  <a href="/login" class="auth-link text-black">Already have an account?
+                    <span class="font-weight-medium">Sign in</span>
+                  </a>
+                </div>
+              
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- content-wrapper ends -->
+    </div>
+    <!-- row ends -->
+  </div>
+  <!-- page-body-wrapper ends -->
+</div>
+

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>WAAW</title>
+  <base href="/">
+
+  <style>
+    .topic-details p label {
+      display: block;
+      font-weight: bold;
+    }
+
+    .card-header.collapsible {
+      display: block;
+      cursor: pointer;
+    }
+
+    .card-header.collapsible h5,
+    .card-header.collapsible h6 {
+      display: inline-block;
+      float: left;
+    }
+
+    .accordion .card .card-header.collapsed {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.125) !important;
+    }
+
+    .card-header.collapsible:after {
+      font-family: 'Material Design Icons';
+      content: "\F13C";
+      float: right;
+    }
+    .card-header.collapsible.collapsed:after {
+      font-family: 'Material Design Icons';
+      content: "\F13F";
+      float: right;
+    }
+
+    img.section-image {
+      max-height: 250px;
+    }
+
+    .navbar .navbar-brand-wrapper .navbar-brand img {
+      min-height: 40px !important;
+    }
+
+    .toast-error {
+      color: #ffffff !important;
+      background-color: #dc3545 !important;
+    }
+
+    .toast-success {
+      color: #ffffff !important;
+      background-color: #28a745 !important;
+    }
+
+    .toast-info {
+      color: #ffffff !important;
+      background-color: #17a2b8 !important;
+    }
+
+    .btn i {
+      margin-right: 0 !important;
+    }
+  </style>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1976d2">
+</head>
+<body class="sidebar-dark ">
+  <!-- sidebar-icon-only -->
+  <app-root></app-root>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<div class="app-title my-3">
+  <div class="row justify-content-between">
+    <div class="col-12 col-md-6">
+      <h3>Curriculums</h3>
+    </div>
+
+    <div class="col-12 col-md-6 text-right">
+      <button class="btn btn-primary btn-sm" (click)="open(content)">
+        <i class="mdi mdi-library-books pr-1"></i>Add A New Curriculum
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="createCurriculumTitle">Add A New Curriculum</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="" [formGroup]="curriculumForm" (ngSubmit)="addNew(curriculumForm.value)">
+      <div class="form-group">
+        <label for="ddlTypes" class="control-label">Select a Type:</label>
+        <select class="form-control" formControlName="curriculum_type_id" id="ddlTypes">
+          <option value="0" selected="selected">Select a type</option>
+          <option *ngFor="let typ of types" value="{{ typ.id }}"> {{ typ.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="ddlSubject" class="control-label">Select a Subject:</label>
+        <select class="form-control" formControlName="subject_id" id="ddlSubject">
+          <option value="0" selected="selected">Select a subject</option>
+          <option *ngFor="let subject of subjects" value="{{ subject.id }}"> {{ subject.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="ddlLevel" class="control-label">Select a Level:</label>
+        <select class="form-control" formControlName="level_id" id="ddlLevel">
+          <option value="0" selected="selected">Select a level</option>
+          <option *ngFor="let level of levels" value="{{ level.id }}"> {{ level.name.toString().toUpperCase() }}</option>
+        </select>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" (click)="createCurriculum()">Add Curriculum</button>
+    <!--<button type="submit" class="btn btn-primary" (click)="c('Save click')">Add Curriculum</button>-->
+  </div>
+</ng-template>
+
+<!--<div class="row">-->
+  <!--&lt;!&ndash; <div class="col-md-12"  *ngIf="users"> &ndash;&gt;-->
+  <!--<div class="col-lg-12 grid-margin stretch-card">-->
+    <!--<div class="card">-->
+      <!--<div class="card-body">-->
+        <!--&lt;!&ndash;<h4 class="card-title">Curriculums</h4>&ndash;&gt;-->
+        <!--&lt;!&ndash;<p class="card-description"></p>&ndash;&gt;-->
+        <!--&lt;!&ndash;<ng2-smart-table [settings]="settings" [source]="curriculums_tbldata"></ng2-smart-table>&ndash;&gt;-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+
+  <!--<div class="col-md-12">-->
+     <!--&lt;!&ndash; *ngIf="noUsers" &ndash;&gt;-->
+
+    <!--<div class="col-md-12" *ngIf="!curriculums">-->
+      <!--&lt;!&ndash; No School &ndash;&gt;-->
+      <!--<div class="divEmpty" style="height: 250px;">-->
+        <!--<div style="display: block; text-align:center; padding-top: 45px;">-->
+          <!--<i class="mdi mdi-library-books" style="font-size: 200px; line-height: 200px; color: rgba(0,0,0,0.05);"></i>-->
+          <!--<p style="font-size: 16px; color: rgba(0,0,0,0.2);" class="mb-20">You are yet to deploy any school</p>-->
+          <!--<a class="btn btn-primary icon-btn" href="/app/schools/new">-->
+            <!--<i class="fa fa-plus"></i>Create New School </a>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--&lt;!&ndash; No school ends &ndash;&gt;-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+<div class="row mb-3">
+  <div class="col-12">
+    <input #search class="search form-control" type="text" placeholder="Search for curriculums..." (keyup)="onSearch(search.value)">
+  </div>
+</div>
+
+<div class="row justify-content-center mt-5" *ngIf="curriculums.length === 0 ">
+  <div class="col-6 p-5 text-center">
+    <div class="align-self-center" style="font-size: 70px !important; color: #bababa !important;">
+      <i class="mdi mdi-library-books"></i>
+      <p>There are no curriculums</p>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4" *ngFor="let curriculum of curriculums" (click)="curriculumDetail(curriculum)" >
+    <div class="card rounded border mb-2">
+      <div class="card-body p-3">
+        <div class="media">
+          <i class="mdi mdi-library-books icon-sm text-primary align-self-center mr-3"></i>
+          <div class="media-body">
+            <h6 class="mb-1">{{ curriculum.subject.name }}</h6>
+            <p class="mb-0">{{ curriculum.type.name }} | {{ curriculum.level.name.toString().toUpperCase() }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

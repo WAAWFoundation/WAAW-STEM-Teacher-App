@@ -1,0 +1,86 @@
+<div class="app-title my-3">
+  <div class="row justify-content-between">
+    <div class="col-12 col-md-6">
+      <h3>Subjects</h3>
+    </div>
+
+    <div class="col-12 col-md-6 text-right">
+      <button class="btn btn-primary btn-sm" (click)="open(content)">
+        <i class="mdi mdi-book-open pr-1"></i>Add A New Subject
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="createSubjectTitle">Add A New Subject</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="" [formGroup]="subjectForm" (ngSubmit)="addNew(curriculumForm.value)">
+      <div class="form-group">
+        <label for="txtSubjectName" class="control-label">Subject Name:</label>
+        <input type="text" class="form-control" id="txtSubjectName" formControlName="name">
+      </div>
+
+      <div class="form-group">
+        <label for="txtSubjectCode" class="control-label">Subject Code:</label>
+        <input type="text" class="form-control" id="txtSubjectCode" formControlName="code">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="createSubject()">Add New Subject</button>
+  </div>
+</ng-template>
+
+
+<div class="row mb-3">
+  <div class="col-12">
+    <input #search class="search form-control" type="text" placeholder="Search for subjects..." (keyup)="onSearch(search.value)">
+  </div>
+</div>
+
+<div class="row justify-content-center mt-5" *ngIf="subjects.length === 0 ">
+  <div class="col-6 p-5 text-center">
+    <div class="align-self-center" style="font-size: 70px !important; color: #bababa !important;">
+      <i class="mdi mdi-book-open"></i>
+      <p>There are no subjects</p>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4" *ngFor="let subject of subjects" (click)="details(subject)">
+    <div class="card rounded border mb-2" >
+      <div class="card-body p-3">
+        <div class="media">
+          <i class="mdi mdi-book-open icon-sm text-primary align-self-center mr-3"></i>
+          <div class="media-body">
+            <h6 class="mb-1">{{ subject.code }} </h6>
+            <p class="mb-0 text-muted">
+             {{ subject.name }}
+            </p>
+           </div>
+         </div>
+       </div>
+    </div>
+  </div>
+
+  <div class="col-md-12" *ngIf="!subjects">
+    <!-- No subject -->
+    <div class="divEmpty" style="height: 250px;">
+      <div style="display: block; text-align:center; padding-top: 45px;">
+        <i class="fa fa-graduation-cap" style="font-size: 200px; line-height: 200px; color: rgba(0,0,0,0.05);"></i>
+        <p style="font-size: 16px; color: rgba(0,0,0,0.2);" class="mb-20">You are yet to add subjects</p>
+        <button class="btn btn-primary btn-sm" (click)="open(content)">
+          <i class="mdi mdi-book-open pr-1"></i>Add A New Subject
+        </button>
+      </div>
+    </div>
+    <!-- No subject ends -->
+  </div>
+</div>

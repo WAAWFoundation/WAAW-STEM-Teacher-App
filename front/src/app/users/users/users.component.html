@@ -1,0 +1,103 @@
+<div class="app-title my-3">
+  <div class="row justify-content-between">
+    <div class="col-12 col-md-6">
+      <h3>Users</h3>
+    </div>
+
+    <div class="col-12 col-md-6 text-right">
+      <button class="btn btn-primary btn-sm" (click)="open(content)">
+        <i class="mdi mdi-account pr-1"></i>Add A New User
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <!-- *ngIf="noUsers" -->
+  <div class="col-12"></div>
+
+  <!-- <div class="col-md-12"  *ngIf="users"> -->
+  <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <!--<h4 class="card-title">Striped Table</h4>-->
+          <!--<p class="card-description">All users within the system</p>-->
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Email Address</th>
+                  <th>First name</th>
+                  <th>Last Name</th>
+                  <th>Phone</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of users; let i = index;" [attr.id]="user.id">
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.account.first_name }}</td>
+                  <td>{{ user.account.last_name }}</td>
+                  <td>{{ user.phone }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="createCurriculumTitle">Add A New User</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="" [formGroup]="userForm">
+      <div class="form-group">
+        <label for="txtEmail" class="control-label">Email Address:</label>
+        <input type="email" formControlName="email" class="form-control" id="txtEmail">
+      </div>
+
+      <div class="form-group">
+        <label for="txtPassword" class="control-label">Password:</label>
+        <input type="password" formControlName="password" class="form-control" id="txtPassword">
+      </div>
+
+      <div class="form-group">
+        <label for="txtConfirmPassword" class="control-label">Confirm Password:</label>
+        <input type="password" formControlName="confirm_password" class="form-control" id="txtConfirmPassword">
+      </div>
+
+      <div class="form-group">
+        <label for="txtPhone" class="control-label">Phone:</label>
+        <input type="text" formControlName="phone" class="form-control" id="txtPhone">
+      </div>
+
+      <div class="form-group">
+        <label for="txtFirstName" class="control-label">First Name:</label>
+        <input type="text" formControlName="first_name" class="form-control" id="txtFirstName">
+      </div>
+
+      <div class="form-group">
+        <label for="txtOtherNames" class="control-label">Other Names:</label>
+        <input type="text" formControlName="other_name" class="form-control" id="txtOtherNames">
+      </div>
+
+      <div class="form-group">
+        <label for="txtLastName" class="control-label">Last Name:</label>
+        <input type="text" formControlName="last_name" class="form-control" id="txtLastName">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" (click)="createUser()">Add User</button>
+    <!--<button type="submit" class="btn btn-primary" (click)="c('Save click')">Add Curriculum</button>-->
+  </div>
+</ng-template>
